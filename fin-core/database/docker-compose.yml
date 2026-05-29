@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: fin-core-postgres
+    environment:
+      POSTGRES_DB: fincore_production
+      POSTGRES_USER: fincore
+      POSTGRES_PASSWORD: fincore_secure_2026
+    ports:
+      - "5433:5432"
+    volumes:
+      - fincore_postgres_data:/var/lib/postgresql/data
+      - ./schema:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+
+volumes:
+  fincore_postgres_data:

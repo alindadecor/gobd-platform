@@ -1,0 +1,25 @@
+{
+	"folders": [
+		{
+			"name": "invoice-chain-worker",
+			"path": "../../../../invoice-chain-worker"
+		},
+		{
+			"name": "gobd-platform",
+			"path": "../../.."
+		},
+		{
+			"path": "../../../../gobd-infrastructure"
+		},
+		{
+			"path": "../../../../gobd-cob-service"
+		},
+		{
+			"path": "../../../../gobd-financial"
+		},
+		{
+			"path": "../../../../gobd-financial/gobd-frontend"
+		}
+	],
+	"settings": {}
+}

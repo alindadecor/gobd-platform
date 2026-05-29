@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: gobd-postgres
+    environment:
+      POSTGRES_DB: gobd_production
+      POSTGRES_USER: gobd
+      POSTGRES_PASSWORD: gobd_secure_2026
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: gobd-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+  rails-api:
+    image: ruby:3.2-alpine
+    container_name: gobd-rails
+    working_dir: /app
+    command: sh -c "apk add --no-cache build-base && bundle install && bundle exec ruby app.rb -o 0.0.0.0 -p 3000"
+    environment:
+      DATABASE_URL: postgresql://gobd:gobd_secure_2026@postgres:5432/gobd_production
+      REDIS_URL: redis://redis:6379/0
+      RAILS_ENV: production
+    volumes:
+      - ./rails-api:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+
+  invoice-service:
+    image: python:3.11-slim
+    container_name: gobd-invoice
+    working_dir: /app
+    command: sh -c "pip install -r requirements.txt && uvicorn main:app --host 0.0.0.0 --port 8000"
+    volumes:
+      - ./invoice-service:/app
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:

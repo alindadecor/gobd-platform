@@ -1,0 +1,11 @@
+{
+  "name": "gobd-api",
+  "version": "1.0.0",
+  "main": "server.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.22.1",
+    "pg": "^8.18.0",
+    "redis": "^4.7.1"
+  }
+}

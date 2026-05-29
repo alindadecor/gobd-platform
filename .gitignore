@@ -1,0 +1,13 @@
+.env
+.dev.vars
+node_modules/
+__pycache__/
+*.pyc
+*.tar.gz
+*.sql
+*.pdf
+*.log
+.DS_Store
+dist/
+.next/
+.wrangler/

@@ -1,0 +1,7 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'gobd-platform'
+    static_configs:
+      - targets: ['gobd-postgres:5432', 'gobd-redis:6379', 'gobd-api:3000', 'gobd-invoice:8000']

@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: gobd-postgres
+    environment:
+      POSTGRES_DB: gobd_production
+      POSTGRES_USER: gobd
+      POSTGRES_PASSWORD: gobd_secure_2026
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: always
+
+  redis:
+    image: redis:7-alpine
+    container_name: gobd-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: always
+
+  invoice-service:
+    build: ./invoice-service
+    container_name: gobd-invoice
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+    restart: always
+
+  api:
+    build: ./nodejs-api
+    container_name: gobd-api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - redis
+    restart: always
+
+  frontend:
+    image: nginx:alpine
+    container_name: gobd-frontend
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    ports:
+      - "8080:80"
+    restart: always
+
+volumes:
+  postgres_data:
+  redis_data:

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoBD Platform - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold mb-8 text-gray-800">🔐 GoBD Platform Dashboard</h1>
+        
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-gray-500 text-sm">Total Invoices</h3>
+                <p class="text-3xl font-bold text-blue-600" id="total-invoices">-</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-gray-500 text-sm">Total Amount</h3>
+                <p class="text-3xl font-bold text-green-600" id="total-amount">-</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-gray-500 text-sm">Finalized</h3>
+                <p class="text-3xl font-bold text-purple-600" id="finalized">-</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-gray-500 text-sm">Blockchain Blocks</h3>
+                <p class="text-3xl font-bold text-orange-600" id="blocks">-</p>
+            </div>
+        </div>
+
+        <!-- Invoices Table -->
+        <div class="bg-white rounded-lg shadow mb-8">
+            <div class="p-6 border-b">
+                <h2 class="text-2xl font-bold">📄 Invoices</h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Invoice #</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Blockchain</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="invoices-table" class="divide-y divide-gray-200">
+                        <tr><td colspan="6" class="px-6 py-4 text-center">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Audit Logs -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="p-6 border-b">
+                <h2 class="text-2xl font-bold">📋 Recent Audit Logs</h2>
+            </div>
+            <div class="p-6">
+                <div id="audit-logs" class="space-y-2">
+                    <p class="text-gray-500">Loading...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+
+        async function loadStats() {
+            const res = await fetch(`${API_URL}/stats`);
+            const data = await res.json();
+            document.getElementById('total-invoices').textContent = data.total_invoices;
+            document.getElementById('total-amount').textContent = '€' + data.total_amount.toFixed(2);
+            document.getElementById('finalized').textContent = data.finalized_invoices;
+            document.getElementById('blocks').textContent = data.blockchain_blocks;
+        }
+
+        async function loadInvoices() {
+            const res = await fetch(`${API_URL}/invoices`);
+            const data = await res.json();
+            const tbody = document.getElementById('invoices-table');
+            
+            tbody.innerHTML = data.invoices.map(inv => `
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 font-medium">${inv.invoice_number}</td>
+                    <td class="px-6 py-4">${inv.customer_name}</td>
+                    <td class="px-6 py-4">€${parseFloat(inv.total_amount).toFixed(2)}</td>
+                    <td class="px-6 py-4">
+                        <span class="px-2 py-1 text-xs rounded-full ${inv.status === 'finalized' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">
+                            ${inv.status}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-xs font-mono">${inv.blockchain_hash ? inv.blockchain_hash.substring(0, 16) + '...' : 'N/A'}</td>
+                    <td class="px-6 py-4">
+                        <a href="http://localhost:8000/invoices/${inv.id}/pdf" target="_blank" class="text-blue-600 hover:underline">Download PDF</a>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function loadAuditLogs() {
+            const res = await fetch(`${API_URL}/audit-logs`);
+            const data = await res.json();
+            const container = document.getElementById('audit-logs');
+            
+            container.innerHTML = data.audit_logs.slice(0, 10).map(log => `
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded">
+                    <div>
+                        <span class="font-medium">${log.action}</span>
+                        <span class="text-gray-500 text-sm">- Invoice #${log.invoice_id}</span>
+                    </div>
+                    <span class="text-xs text-gray-400">${new Date(log.timestamp).toLocaleString()}</span>
+                </div>
+            `).join('');
+        }
+
+        // Load data
+        loadStats();
+        loadInvoices();
+        loadAuditLogs();
+
+        // Auto refresh every 30 seconds
+        setInterval(() => {
+            loadStats();
+            loadInvoices();
+            loadAuditLogs();
+        }, 30000);
+    </script>
+</body>
+</html>
