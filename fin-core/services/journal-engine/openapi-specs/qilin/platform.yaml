@@ -1,0 +1,4923 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI Document on Azure Functions
+  description: |
+    This is the OpenAPI Document on Azure Functions
+
+    # Authentication
+
+    Qilin offers two forms of authentication:
+      - bearer
+      - api_key
+
+    bearer - an open protocol to allow secure authorization in a simple
+    and standard method from web, mobile and desktop applications.
+
+    <SecurityDefinitions />
+  version: 1.0.0
+  license:
+    name: Qilin
+    url: Qilin.com
+servers:
+  - url: https://apimgmt-qilin-dev.azure-api.net/test/api
+paths:
+  /requests/access:
+    post:
+      tags:
+        - AccessRequest
+      summary: Create a new access request
+      operationId: CreateAccessRequest
+      requestBody:
+        description: Access request model
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createAccessRequestDto'
+        required: true
+      responses:
+        '200':
+          description: The OK response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_accessRequestBaseDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+    get:
+      tags:
+        - AccessRequest
+      summary: Get a list of access requests
+      operationId: GetAccessRequests
+      parameters:
+        - name: pageIndex
+          in: query
+          description: The index of the page
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          description: Total items of per page
+          schema:
+            type: integer
+            format: int32
+        - name: orderBy
+          in: query
+          description: Order by field
+          schema:
+            type: string
+        - name: orderType
+          in: query
+          description: Order by type
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with list of object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_getAccessRequestDetailDto[]'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /requests/access/{id}:
+    get:
+      tags:
+        - AccessRequest
+      summary: Get the detail of a access request by id
+      operationId: GetAccessRequestById
+      parameters:
+        - name: id
+          in: path
+          description: The access request identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: The OK response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_getAccessRequestDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /requests/access/{requestId}/status:
+    put:
+      tags:
+        - AccessRequest
+      summary: Update access request status
+      operationId: UpdateAccessRequestStatus
+      requestBody:
+        description: Update access request status model
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/updateAccessRequestStatusDto'
+        required: true
+      responses:
+        '200':
+          description: Successful response with updated object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_accessRequestBaseDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /activitylogs/export/admin:
+    get:
+      tags:
+        - Activity Log
+      summary: Export detail of activityLogs
+      operationId: ExportActivityLogsAdminLevel
+      parameters:
+        - name: pageIndex
+          in: query
+          description: The index of the page
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          description: Total items per page
+          schema:
+            type: integer
+            format: int32
+        - name: orderBy
+          in: query
+          description: Order by field
+          schema:
+            type: string
+        - name: orderType
+          in: query
+          description: Order by type
+          schema:
+            type: string
+        - name: fromDate
+          in: query
+          description: CreatedDate form of ActivityLog
+          schema:
+            type: string
+            format: date-time
+        - name: toDate
+          in: query
+          description: CreatedDate to of ActivityLog
+          schema:
+            type: string
+            format: date-time
+        - name: transactionId
+          in: query
+          description: The transactionId
+          schema:
+            type: integer
+            format: int64
+        - name: objectId
+          in: query
+          description: The objectId
+          schema:
+            type: string
+        - name: actionGroupId
+          in: query
+          description: The action group
+          schema:
+            enum:
+              - 0
+              - 1000
+              - 2000
+              - 3000
+              - 4000
+              - 5000
+              - 6000
+              - 7000
+            type: integer
+            format: int32
+            default: 0
+        - name: actionCode
+          in: query
+          description: The action code
+          schema:
+            enum:
+              - 1000
+              - 1001
+              - 1002
+              - 1003
+              - 1004
+              - 1050
+              - 1051
+              - 1052
+              - 1053
+              - 1060
+              - 1061
+              - 1062
+              - 1063
+              - 1070
+              - 1071
+              - 1072
+              - 1073
+              - 1080
+              - 1081
+              - 1082
+              - 1083
+              - 1090
+              - 1091
+              - 1092
+              - 1093
+              - 1100
+              - 1101
+              - 1102
+              - 1103
+              - 2000
+              - 2001
+              - 2002
+              - 2003
+              - 2500
+              - 2501
+              - 2503
+              - 2700
+              - 2701
+              - 2702
+              - 2703
+              - 3000
+              - 3001
+              - 3002
+              - 3003
+              - 3100
+              - 3101
+              - 3102
+              - 3103
+              - 3104
+              - 3150
+              - 3151
+              - 3152
+              - 3153
+              - 3154
+              - 3155
+              - 3200
+              - 3201
+              - 3202
+              - 3203
+              - 3250
+              - 3270
+              - 3271
+              - 3300
+              - 3301
+              - 3302
+              - 3303
+              - 3304
+              - 4000
+              - 4001
+              - 4002
+              - 5000
+              - 5001
+              - 5002
+              - 5003
+              - 6000
+              - 7000
+              - 7001
+              - 7002
+              - 7003
+              - 8000
+              - 9000
+              - 9001
+              - 9050
+              - 9051
+              - 9052
+              - 9053
+              - 9054
+              - 9055
+              - 9060
+              - 9070
+              - 9071
+              - 9080
+              - 9081
+              - 9082
+              - 9083
+              - 9090
+              - 9091
+              - 9092
+              - 9093
+              - 9095
+              - 9096
+              - 9097
+              - 9098
+              - 10000
+              - 10001
+              - 10002
+              - 10003
+              - 10005
+              - 10006
+              - 10007
+              - 10008
+              - 10009
+              - 10010
+              - 10011
+              - 10012
+              - 10013
+              - 10015
+              - 10016
+              - 10017
+              - 10018
+              - 10020
+              - 10021
+              - 10022
+              - 10023
+              - 10025
+              - 10026
+              - 10027
+              - 10028
+              - 10030
+              - 10031
+              - 10032
+              - 10035
+              - 10036
+              - 10037
+              - 10038
+              - 10040
+              - 10041
+              - 10042
+              - 10043
+              - 10045
+              - 10046
+              - 10050
+              - 10051
+              - 10101
+              - 10102
+              - 10103
+              - 10104
+              - 10105
+              - 10106
+              - 10107
+              - 10108
+            type: integer
+            format: int32
+            default: 1000
+        - name: logType
+          in: query
+          description: Type of log
+          schema:
+            enum:
+              - 0
+              - 1
+              - 2
+              - 3
+              - 4
+            type: integer
+            format: int32
+            default: 0
+        - name: actorId
+          in: query
+          description: Who is action on this transaction
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with created object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fileStreamResult'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /activitylogs/export:
+    get:
+      tags:
+        - Activity Log
+      summary: Export activity log
+      operationId: ExportActivityLogsUserLevel
+      parameters:
+        - name: pageIndex
+          in: query
+          description: The index of the page
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          description: Total items per page
+          schema:
+            type: integer
+            format: int32
+        - name: orderBy
+          in: query
+          description: Order by field
+          schema:
+            type: string
+        - name: orderType
+          in: query
+          description: Order by type
+          schema:
+            type: string
+        - name: fromDate
+          in: query
+          description: CreatedDate form of ActivityLog
+          schema:
+            type: string
+            format: date-time
+        - name: toDate
+          in: query
+          description: CreatedDate to of ActivityLog
+          schema:
+            type: string
+            format: date-time
+        - name: transactionId
+          in: query
+          description: The transactionId
+          schema:
+            type: integer
+            format: int64
+        - name: objectId
+          in: query
+          description: The objectId
+          schema:
+            type: string
+        - name: actionGroupId
+          in: query
+          description: The action group
+          schema:
+            enum:
+              - 0
+              - 1000
+              - 2000
+              - 3000
+              - 4000
+              - 5000
+              - 6000
+              - 7000
+            type: integer
+            format: int32
+            default: 0
+        - name: actionCode
+          in: query
+          description: The action code
+          schema:
+            enum:
+              - 1000
+              - 1001
+              - 1002
+              - 1003
+              - 1004
+              - 1050
+              - 1051
+              - 1052
+              - 1053
+              - 1060
+              - 1061
+              - 1062
+              - 1063
+              - 1070
+              - 1071
+              - 1072
+              - 1073
+              - 1080
+              - 1081
+              - 1082
+              - 1083
+              - 1090
+              - 1091
+              - 1092
+              - 1093
+              - 1100
+              - 1101
+              - 1102
+              - 1103
+              - 2000
+              - 2001
+              - 2002
+              - 2003
+              - 2500
+              - 2501
+              - 2503
+              - 2700
+              - 2701
+              - 2702
+              - 2703
+              - 3000
+              - 3001
+              - 3002
+              - 3003
+              - 3100
+              - 3101
+              - 3102
+              - 3103
+              - 3104
+              - 3150
+              - 3151
+              - 3152
+              - 3153
+              - 3154
+              - 3155
+              - 3200
+              - 3201
+              - 3202
+              - 3203
+              - 3250
+              - 3270
+              - 3271
+              - 3300
+              - 3301
+              - 3302
+              - 3303
+              - 3304
+              - 4000
+              - 4001
+              - 4002
+              - 5000
+              - 5001
+              - 5002
+              - 5003
+              - 6000
+              - 7000
+              - 7001
+              - 7002
+              - 7003
+              - 8000
+              - 9000
+              - 9001
+              - 9050
+              - 9051
+              - 9052
+              - 9053
+              - 9054
+              - 9055
+              - 9060
+              - 9070
+              - 9071
+              - 9080
+              - 9081
+              - 9082
+              - 9083
+              - 9090
+              - 9091
+              - 9092
+              - 9093
+              - 9095
+              - 9096
+              - 9097
+              - 9098
+              - 10000
+              - 10001
+              - 10002
+              - 10003
+              - 10005
+              - 10006
+              - 10007
+              - 10008
+              - 10009
+              - 10010
+              - 10011
+              - 10012
+              - 10013
+              - 10015
+              - 10016
+              - 10017
+              - 10018
+              - 10020
+              - 10021
+              - 10022
+              - 10023
+              - 10025
+              - 10026
+              - 10027
+              - 10028
+              - 10030
+              - 10031
+              - 10032
+              - 10035
+              - 10036
+              - 10037
+              - 10038
+              - 10040
+              - 10041
+              - 10042
+              - 10043
+              - 10045
+              - 10046
+              - 10050
+              - 10051
+              - 10101
+              - 10102
+              - 10103
+              - 10104
+              - 10105
+              - 10106
+              - 10107
+              - 10108
+            type: integer
+            format: int32
+            default: 1000
+        - name: logType
+          in: query
+          description: Type of log
+          schema:
+            enum:
+              - 0
+              - 1
+              - 2
+              - 3
+              - 4
+            type: integer
+            format: int32
+            default: 0
+        - name: actorId
+          in: query
+          description: Who is action on this transaction
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with created object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_fileStreamResult'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /activitylogs/admin:
+    get:
+      tags:
+        - Activity Log
+      summary: Get a list of activity logs
+      operationId: GetActivityLogsAdminLevel
+      parameters:
+        - name: pageIndex
+          in: query
+          description: The index of the page
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          description: Total items per page
+          schema:
+            type: integer
+            format: int32
+        - name: orderBy
+          in: query
+          description: Order by field
+          schema:
+            type: string
+        - name: orderType
+          in: query
+          description: Order by type
+          schema:
+            type: string
+        - name: fromDate
+          in: query
+          description: CreatedDate form of ActivityLog
+          schema:
+            type: string
+            format: date-time
+        - name: toDate
+          in: query
+          description: CreatedDate to of ActivityLog
+          schema:
+            type: string
+            format: date-time
+        - name: transactionId
+          in: query
+          description: The transactionId
+          schema:
+            type: integer
+            format: int64
+        - name: objectId
+          in: query
+          description: The objectId
+          schema:
+            type: string
+        - name: actionGroupId
+          in: query
+          description: The action group
+          schema:
+            enum:
+              - 0
+              - 1000
+              - 2000
+              - 3000
+              - 4000
+              - 5000
+              - 6000
+              - 7000
+            type: integer
+            format: int32
+            default: 0
+        - name: actionCode
+          in: query
+          description: The action code
+          schema:
+            enum:
+              - 1000
+              - 1001
+              - 1002
+              - 1003
+              - 1004
+              - 1050
+              - 1051
+              - 1052
+              - 1053
+              - 1060
+              - 1061
+              - 1062
+              - 1063
+              - 1070
+              - 1071
+              - 1072
+              - 1073
+              - 1080
+              - 1081
+              - 1082
+              - 1083
+              - 1090
+              - 1091
+              - 1092
+              - 1093
+              - 1100
+              - 1101
+              - 1102
+              - 1103
+              - 2000
+              - 2001
+              - 2002
+              - 2003
+              - 2500
+              - 2501
+              - 2503
+              - 2700
+              - 2701
+              - 2702
+              - 2703
+              - 3000
+              - 3001
+              - 3002
+              - 3003
+              - 3100
+              - 3101
+              - 3102
+              - 3103
+              - 3104
+              - 3150
+              - 3151
+              - 3152
+              - 3153
+              - 3154
+              - 3155
+              - 3200
+              - 3201
+              - 3202
+              - 3203
+              - 3250
+              - 3270
+              - 3271
+              - 3300
+              - 3301
+              - 3302
+              - 3303
+              - 3304
+              - 4000
+              - 4001
+              - 4002
+              - 5000
+              - 5001
+              - 5002
+              - 5003
+              - 6000
+              - 7000
+              - 7001
+              - 7002
+              - 7003
+              - 8000
+              - 9000
+              - 9001
+              - 9050
+              - 9051
+              - 9052
+              - 9053
+              - 9054
+              - 9055
+              - 9060
+              - 9070
+              - 9071
+              - 9080
+              - 9081
+              - 9082
+              - 9083
+              - 9090
+              - 9091
+              - 9092
+              - 9093
+              - 9095
+              - 9096
+              - 9097
+              - 9098
+              - 10000
+              - 10001
+              - 10002
+              - 10003
+              - 10005
+              - 10006
+              - 10007
+              - 10008
+              - 10009
+              - 10010
+              - 10011
+              - 10012
+              - 10013
+              - 10015
+              - 10016
+              - 10017
+              - 10018
+              - 10020
+              - 10021
+              - 10022
+              - 10023
+              - 10025
+              - 10026
+              - 10027
+              - 10028
+              - 10030
+              - 10031
+              - 10032
+              - 10035
+              - 10036
+              - 10037
+              - 10038
+              - 10040
+              - 10041
+              - 10042
+              - 10043
+              - 10045
+              - 10046
+              - 10050
+              - 10051
+              - 10101
+              - 10102
+              - 10103
+              - 10104
+              - 10105
+              - 10106
+              - 10107
+              - 10108
+            type: integer
+            format: int32
+            default: 1000
+        - name: logType
+          in: query
+          description: Type of log
+          schema:
+            enum:
+              - 0
+              - 1
+              - 2
+              - 3
+              - 4
+            type: integer
+            format: int32
+            default: 0
+        - name: actorId
+          in: query
+          description: Who is action on this transaction
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with created object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_activityLogDetailAdminLevelDto[]'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /activitylogs:
+    get:
+      tags:
+        - Activity Log
+      summary: Get a list of activity logs
+      operationId: GetActivityLogsUserLevel
+      parameters:
+        - name: pageIndex
+          in: query
+          description: The index of the page
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          description: Total items per page
+          schema:
+            type: integer
+            format: int32
+        - name: orderBy
+          in: query
+          description: Order by field
+          schema:
+            type: string
+        - name: orderType
+          in: query
+          description: Order by type
+          schema:
+            type: string
+        - name: fromDate
+          in: query
+          description: CreatedDate form of ActivityLog
+          schema:
+            type: string
+            format: date-time
+        - name: toDate
+          in: query
+          description: CreatedDate to of ActivityLog
+          schema:
+            type: string
+            format: date-time
+        - name: transactionId
+          in: query
+          description: The transactionId
+          schema:
+            type: integer
+            format: int64
+        - name: objectId
+          in: query
+          description: The objectId
+          schema:
+            type: string
+        - name: actionGroupId
+          in: query
+          description: The action group
+          schema:
+            enum:
+              - 0
+              - 1000
+              - 2000
+              - 3000
+              - 4000
+              - 5000
+              - 6000
+              - 7000
+            type: integer
+            format: int32
+            default: 0
+        - name: actionCode
+          in: query
+          description: The action code
+          schema:
+            enum:
+              - 1000
+              - 1001
+              - 1002
+              - 1003
+              - 1004
+              - 1050
+              - 1051
+              - 1052
+              - 1053
+              - 1060
+              - 1061
+              - 1062
+              - 1063
+              - 1070
+              - 1071
+              - 1072
+              - 1073
+              - 1080
+              - 1081
+              - 1082
+              - 1083
+              - 1090
+              - 1091
+              - 1092
+              - 1093
+              - 1100
+              - 1101
+              - 1102
+              - 1103
+              - 2000
+              - 2001
+              - 2002
+              - 2003
+              - 2500
+              - 2501
+              - 2503
+              - 2700
+              - 2701
+              - 2702
+              - 2703
+              - 3000
+              - 3001
+              - 3002
+              - 3003
+              - 3100
+              - 3101
+              - 3102
+              - 3103
+              - 3104
+              - 3150
+              - 3151
+              - 3152
+              - 3153
+              - 3154
+              - 3155
+              - 3200
+              - 3201
+              - 3202
+              - 3203
+              - 3250
+              - 3270
+              - 3271
+              - 3300
+              - 3301
+              - 3302
+              - 3303
+              - 3304
+              - 4000
+              - 4001
+              - 4002
+              - 5000
+              - 5001
+              - 5002
+              - 5003
+              - 6000
+              - 7000
+              - 7001
+              - 7002
+              - 7003
+              - 8000
+              - 9000
+              - 9001
+              - 9050
+              - 9051
+              - 9052
+              - 9053
+              - 9054
+              - 9055
+              - 9060
+              - 9070
+              - 9071
+              - 9080
+              - 9081
+              - 9082
+              - 9083
+              - 9090
+              - 9091
+              - 9092
+              - 9093
+              - 9095
+              - 9096
+              - 9097
+              - 9098
+              - 10000
+              - 10001
+              - 10002
+              - 10003
+              - 10005
+              - 10006
+              - 10007
+              - 10008
+              - 10009
+              - 10010
+              - 10011
+              - 10012
+              - 10013
+              - 10015
+              - 10016
+              - 10017
+              - 10018
+              - 10020
+              - 10021
+              - 10022
+              - 10023
+              - 10025
+              - 10026
+              - 10027
+              - 10028
+              - 10030
+              - 10031
+              - 10032
+              - 10035
+              - 10036
+              - 10037
+              - 10038
+              - 10040
+              - 10041
+              - 10042
+              - 10043
+              - 10045
+              - 10046
+              - 10050
+              - 10051
+              - 10101
+              - 10102
+              - 10103
+              - 10104
+              - 10105
+              - 10106
+              - 10107
+              - 10108
+            type: integer
+            format: int32
+            default: 1000
+        - name: logType
+          in: query
+          description: Type of log
+          schema:
+            enum:
+              - 0
+              - 1
+              - 2
+              - 3
+              - 4
+            type: integer
+            format: int32
+            default: 0
+        - name: actorId
+          in: query
+          description: Who is action on this transaction
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with created object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_activityLogDto[]'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /notifications:
+    get:
+      tags:
+        - Notification
+      summary: Get a list of notifications
+      operationId: GetNotifications
+      parameters:
+        - name: pageIndex
+          in: query
+          description: The index of the page
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          description: Total items of per page
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Successful response with list of object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_notificationDto[]'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /actions:
+    post:
+      tags:
+        - QilinAction
+      summary: Create a new qilin action
+      operationId: CreateQilinAction
+      requestBody:
+        description: Qilin Action Model
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/qilinActionDto'
+        required: true
+      responses:
+        '200':
+          description: Successful response with created object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinActionDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+    get:
+      tags:
+        - QilinAction
+      summary: Get a list of qilin action
+      operationId: GetQilinActions
+      parameters:
+        - name: pageIndex
+          in: query
+          description: The index of the page
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          description: Total items of per page
+          schema:
+            type: integer
+            format: int32
+        - name: orderBy
+          in: query
+          description: Order by field
+          schema:
+            type: string
+        - name: orderType
+          in: query
+          description: Order by type
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with list of object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinActionDetailDto[]'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /actions/{id}:
+    get:
+      tags:
+        - QilinAction
+      summary: Get a qilin action by id
+      operationId: GetQilinActionById
+      parameters:
+        - name: id
+          in: path
+          description: The Qilin Action identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful response with the detail of object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinActionDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+    put:
+      tags:
+        - QilinAction
+      summary: Update a qilin action
+      operationId: UpdateQilinAction
+      parameters:
+        - name: id
+          in: path
+          description: The Qilin Action identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Qilin Action Model
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/qilinActionDto'
+        required: true
+      responses:
+        '200':
+          description: Successful response with updated object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinActionDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /permissions:
+    post:
+      tags:
+        - QilinPermission
+      summary: Create a new qilin permission
+      operationId: CreateQilinPermission
+      requestBody:
+        description: Qilin Permission Model
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/qilinPermissionDto'
+        required: true
+      responses:
+        '200':
+          description: Successful response with created object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinPermissionDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+    get:
+      tags:
+        - QilinPermission
+      summary: Get a list of qilin permission
+      operationId: GetQilinPermissions
+      parameters:
+        - name: pageIndex
+          in: query
+          description: The index of the page
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          description: Total items of per page
+          schema:
+            type: integer
+            format: int32
+        - name: orderBy
+          in: query
+          description: Order by field
+          schema:
+            type: string
+        - name: orderType
+          in: query
+          description: Order by type
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with list of object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinPermissionDetailDto[]'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /permissions/{id}:
+    get:
+      tags:
+        - QilinPermission
+      summary: Get a qilin permission by id
+      operationId: GetQilinPermissionById
+      parameters:
+        - name: id
+          in: path
+          description: The Qilin Permission identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful response with the detail of object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinPermissionDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /resources:
+    post:
+      tags:
+        - QilinResource
+      summary: Create a new qilin resource
+      operationId: CreateQilinResource
+      requestBody:
+        description: Qilin Resource Model
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/qilinResourceDto'
+        required: true
+      responses:
+        '200':
+          description: Successful response with created object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinResourceDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+    get:
+      tags:
+        - QilinResource
+      summary: Get a list of qilin resource
+      operationId: GetQilinResources
+      parameters:
+        - name: pageIndex
+          in: query
+          description: The index of the page
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          description: Total items of per page
+          schema:
+            type: integer
+            format: int32
+        - name: orderBy
+          in: query
+          description: Order by field
+          schema:
+            type: string
+        - name: orderType
+          in: query
+          description: Order by type
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with list of object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinResourceDetailDto[]'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /resources/{id}:
+    get:
+      tags:
+        - QilinResource
+      summary: Get a qilin resource by id
+      operationId: GetQilinResourceById
+      parameters:
+        - name: id
+          in: path
+          description: The Qilin Resource identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful response with the detail of object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinResourceDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+    put:
+      tags:
+        - QilinResource
+      summary: Update a qilin resource
+      operationId: UpdateQilinResource
+      parameters:
+        - name: id
+          in: path
+          description: The Qilin Resource identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Qilin Resource Model
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/qilinResourceDto'
+        required: true
+      responses:
+        '200':
+          description: Successful response with updated object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinResourceDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /roles/{id}/permission:
+    post:
+      tags:
+        - QilinRole
+      summary: Assign array of permission to role
+      operationId: AssignPermissionsToRole
+      parameters:
+        - name: id
+          in: path
+          description: The Qilin Role identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: array of permission
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        '200':
+          description: Successful response with created object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinRoleDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /roles:
+    post:
+      tags:
+        - QilinRole
+      summary: Create a new qilin role
+      operationId: CreateQilinRole
+      requestBody:
+        description: Qilin Role Model
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/qilinRoleDto'
+        required: true
+      responses:
+        '200':
+          description: Successful response with created object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinRoleDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+    get:
+      tags:
+        - QilinRole
+      summary: Get a list of qilin role
+      operationId: GetQilinRoles
+      parameters:
+        - name: pageIndex
+          in: query
+          description: The index of the page
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          description: Total items of per page
+          schema:
+            type: integer
+            format: int32
+        - name: orderBy
+          in: query
+          description: Order by field
+          schema:
+            type: string
+        - name: orderType
+          in: query
+          description: Order by type
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with list of object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinRoleDetailDto[]'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /roles/default:
+    get:
+      tags:
+        - QilinRole
+      summary: Get a list of qilin role default
+      operationId: GetQilinDefaultRoles
+      parameters:
+        - name: pageIndex
+          in: query
+          description: The index of the page
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          description: Total items of per page
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Successful response with list of object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinRoleDetailDto[]'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /roles/{id}:
+    get:
+      tags:
+        - QilinRole
+      summary: Get a qilin role by id
+      operationId: GetQilinRoleById
+      parameters:
+        - name: id
+          in: path
+          description: The Qilin Role identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful response with the detail of object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinRoleDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+    put:
+      tags:
+        - QilinRole
+      summary: Update a qilin role
+      operationId: UpdateQilinRole
+      parameters:
+        - name: id
+          in: path
+          description: The Qilin Role identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Qilin Role Model
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/qilinRoleDto'
+        required: true
+      responses:
+        '200':
+          description: Successful response with updated object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinRoleDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /usermanagement/users/{userId}/roles:
+    post:
+      tags:
+        - User Management
+      summary: Assign array of role to user
+      operationId: UserManagementAssignRolesToUser
+      parameters:
+        - name: userId
+          in: path
+          description: The Qilin User identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: array of role
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        '200':
+          description: Successful response with created object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinUserDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /usermanagement/user:
+    post:
+      tags:
+        - User Management
+      summary: Create a new qilin user under a Qilin Subscription
+      operationId: UserManagementCreateQilinUser
+      requestBody:
+        description: Qilin User Model
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/qilinUserDto'
+        required: true
+      responses:
+        '200':
+          description: Successful response with created object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinUserDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /usermanagement/users/{userId}:
+    delete:
+      tags:
+        - User Management
+      summary: Delete a Qilin User by id
+      operationId: UserManagementDeleteQilinUser
+      parameters:
+        - name: userId
+          in: path
+          description: The Qilin User identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Delete successfully message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_object'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+    get:
+      tags:
+        - User Management
+      summary: Get a Qilin User by id
+      operationId: UserManagementGetQilinUserById
+      parameters:
+        - name: userId
+          in: path
+          description: The Qilin User identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful response with the detail of object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinUserDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+    put:
+      tags:
+        - User Management
+      summary: 'Update a Qilin User '
+      operationId: UserManagementUpdateQilinUser
+      parameters:
+        - name: userId
+          in: path
+          description: The Qilin User identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Qilin user Model
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/qilinUserBaseDto'
+        required: true
+      responses:
+        '200':
+          description: Successful response with the detail of object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinUserDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /usermanagement/users:
+    get:
+      tags:
+        - User Management
+      summary: Get list of users by condition
+      operationId: UserManagementGetQilinUserListing
+      parameters:
+        - name: pageIndex
+          in: query
+          description: The index of the page
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          description: Total items of per page
+          schema:
+            type: integer
+            format: int32
+        - name: orderBy
+          in: query
+          description: Order by field
+          schema:
+            type: string
+        - name: orderType
+          in: query
+          description: Order by type
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The Qilin User list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinUserDetailDto[]'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+  /usermanagement/users/{userId}/permissions:
+    get:
+      tags:
+        - User Management
+      summary: Get  Qilin User Permission Listing
+      operationId: UserManagementGetQilinUserPermissionListing
+      parameters:
+        - name: userId
+          in: path
+          description: The Qilin User identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful response with the detail of object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinPermissionDetailDto[]'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /usermanagement/users/{userId}/status:
+    post:
+      tags:
+        - User Management
+      summary: Update a Qilin User status
+      operationId: UserManagementUpdateQilinUserStatus
+      parameters:
+        - name: userId
+          in: path
+          description: The Qilin User identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Qilin user status
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        '200':
+          description: Successful response with the detail of object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinUserDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /qilinsubscriptions/{subscriptionId}/users/{userId}/roles:
+    post:
+      tags:
+        - Qilin Subscription
+      summary: Assign array of role to user
+      operationId: AssignRolesToUser
+      parameters:
+        - name: subscriptionId
+          in: path
+          description: The **SubscriptionId** parameter
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: path
+          description: The Qilin User identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: array of role
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        '200':
+          description: Successful response with created object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinUserDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /qilinsubscriptions/{subscriptionId}/user:
+    post:
+      tags:
+        - Qilin Subscription
+      summary: Create a new qilin user under a Qilin Subscription
+      operationId: CreateQilinUser
+      parameters:
+        - name: subscriptionId
+          in: path
+          description: The **SubscriptionId** parameter
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Qilin User Model
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/qilinUserDto'
+        required: true
+      responses:
+        '200':
+          description: Successful response with created object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinUserDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /qilinsubscriptions/{subscriptionId}/users/{userId}:
+    delete:
+      tags:
+        - Qilin Subscription
+      summary: Delete a Qilin User by id
+      operationId: DeleteQilinUser
+      parameters:
+        - name: subscriptionId
+          in: path
+          description: The Qilin SubscriptionId identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: userId
+          in: path
+          description: The Qilin User identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Delete successfully message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_object'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+    get:
+      tags:
+        - Qilin Subscription
+      summary: Get a Qilin User by id
+      operationId: GetQilinUserById
+      parameters:
+        - name: subscriptionId
+          in: path
+          description: The Qilin SubscriptionId identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: userId
+          in: path
+          description: The Qilin User identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful response with the detail of object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinUserDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+    put:
+      tags:
+        - Qilin Subscription
+      summary: 'Update a Qilin User '
+      operationId: UpdateQilinUser
+      parameters:
+        - name: subscriptionId
+          in: path
+          description: The Qilin SubscriptionId identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: userId
+          in: path
+          description: The Qilin User identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Qilin user Model
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/qilinUserBaseDto'
+        required: true
+      responses:
+        '200':
+          description: Successful response with the detail of object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinUserDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /qilinsubscriptions/{subscriptionId}/users:
+    get:
+      tags:
+        - Qilin Subscription
+      summary: Get list of users by condition
+      operationId: GetQilinUserListing
+      parameters:
+        - name: subscriptionId
+          in: path
+          description: The Qilin subscription identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: pageIndex
+          in: query
+          description: The index of the page
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          description: Total items of per page
+          schema:
+            type: integer
+            format: int32
+        - name: orderBy
+          in: query
+          description: Order by field
+          schema:
+            type: string
+        - name: orderType
+          in: query
+          description: Order by type
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The Qilin User list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinUserDetailDto[]'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /qilinsubscriptions/{subscriptionId}/users/{userId}/permissions:
+    get:
+      tags:
+        - Qilin Subscription
+      summary: Get  Qilin User permission by id
+      operationId: GetQilinUserPermissionListing
+      parameters:
+        - name: subscriptionId
+          in: path
+          description: The Qilin SubscriptionId identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: userId
+          in: path
+          description: The Qilin User identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful response with the detail of object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinPermissionDetailDto[]'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /qilinsubscriptions/{subscriptionId}/users/{userId}/status:
+    post:
+      tags:
+        - Qilin Subscription
+      summary: Update a Qilin User status
+      operationId: UpdateQilinUserStatus
+      parameters:
+        - name: subscriptionId
+          in: path
+          description: The Qilin SubscriptionId identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: userId
+          in: path
+          description: The Qilin User identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Qilin user status
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        '200':
+          description: Successful response with the detail of object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinUserDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /qilinsubscriptions:
+    post:
+      tags:
+        - Qilin Subscription
+      summary: Create a new Qilin Subscription
+      operationId: CreateSubscription
+      requestBody:
+        description: Qilin Subscription Model
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/qilinSubscriptionDto'
+        required: true
+      responses:
+        '200':
+          description: Successful response with created object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinSubscriptionDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+    get:
+      tags:
+        - Qilin Subscription
+      summary: Get list of Qilin Subscription
+      operationId: GetSubscriptionListing
+      parameters:
+        - name: pageIndex
+          in: query
+          description: The index of the page
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          description: Total items of per page
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: orderBy
+          in: query
+          description: Order by field
+          required: true
+          schema:
+            type: string
+        - name: orderType
+          in: query
+          description: Order by type
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with the detail of object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinSubscriptionDetailDto[]'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /qilinsubscriptions/{subscriptionId}:
+    delete:
+      tags:
+        - Qilin Subscription
+      summary: Delete a Subscription
+      operationId: DeleteSubscription
+      parameters:
+        - name: subscriptionId
+          in: path
+          description: The **SubscriptionId** parameter
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Delete successfully message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_object'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+    get:
+      tags:
+        - Qilin Subscription
+      summary: Get a Qilin Subscription by id
+      operationId: GetSubscriptionById
+      parameters:
+        - name: subscriptionId
+          in: path
+          description: The Qilin Subscription identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful response with the detail of object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinSubscriptionDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+    put:
+      tags:
+        - Qilin Subscription
+      summary: Update a qilin subscription
+      operationId: UpdateSubscription
+      parameters:
+        - name: subscriptionId
+          in: path
+          description: The Qilin subscription identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Qilin subscription Model
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/qilinSubscriptionBaseDto'
+        required: true
+      responses:
+        '200':
+          description: Successful response with updated object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinSubscriptionDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /qilinsubscriptions/{subscriptionId}/status:
+    post:
+      tags:
+        - Qilin Subscription
+      summary: Update a qilin subscription
+      operationId: UpdateSubscriptionStatus
+      parameters:
+        - name: subscriptionId
+          in: path
+          description: The Qilin subscription identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Qilin subscription status
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        '200':
+          description: Successful response with updated object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinSubscriptionDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /apiKeys:
+    post:
+      tags:
+        - QilinApiKey
+      summary: Create a new qilin api key
+      operationId: CreateQilinApiKey
+      requestBody:
+        description: Qilin api key Model
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/qilinApiKeyDto'
+        required: true
+      responses:
+        '200':
+          description: Successful response with created object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinApiKeyDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+    get:
+      tags:
+        - QilinApiKey
+      summary: Get a list of qilin api key by subscriptionId
+      operationId: GetQilinApiKeyBySubscriptionId
+      parameters:
+        - name: subscriptionId
+          in: query
+          description: subscription id
+          required: true
+          schema:
+            type: string
+        - name: pageIndex
+          in: query
+          description: The index of the page
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          description: Total items of per page
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: orderBy
+          in: query
+          description: Order by field
+          required: true
+          schema:
+            type: string
+        - name: orderType
+          in: query
+          description: Order by type
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with list of object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinApiKeyDetailDto[]'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+  /apiKeys/{id}:
+    delete:
+      tags:
+        - QilinApiKey
+      summary: Delete a qilin api key
+      operationId: DeleteQilinApiKeyById
+      parameters:
+        - name: key
+          in: path
+          description: The Api Key want to delete
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Delete successfully message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_object'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+    get:
+      tags:
+        - QilinApiKey
+      summary: Get a qilin api key
+      operationId: GetQilinApiKeyById
+      parameters:
+        - name: key
+          in: path
+          description: The Api Key identity
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful response with the detail of object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successResponse_qilinApiKeyDetailDto'
+        '400':
+          description: Bad request response with detail of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequestExceptionModel'
+        '500':
+          description: Server error response
+          content:
+            application/json:
+              schema:
+                type: string
+components:
+  securitySchemes:
+    bearer:
+      type: http
+      description: |
+        Use this [link](https://qilindev.b2clogin.com/qilindev.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1_SIGNIN_TEST&client_id=ef526441-11da-42c3-9219-93b8a8d4c953&nonce=defaultNonce&redirect_uri=https%3A%2F%2Fjwt.ms&scope=openid&response_type=id_token&prompt=login) to login and get the JWT
+      scheme: bearer
+    api_key:
+      type: apiKey
+      in: header
+      name: x-api-key
+  schemas:
+    supportPrice:
+      type: object
+      properties:
+        amountInFractionalUnit:
+          type: integer
+          format: int32
+          nullable: true
+        currency:
+          type: string
+        unitOfTime:
+          enum:
+            - 0
+            - 1
+            - 2
+          type: integer
+          format: int32
+          default: 0
+          nullable: true
+      description: The price of support
+    getAccessRequestDetailDto:
+      type: object
+      properties:
+        permissionRequested:
+          type: array
+          items:
+            type: string
+          description: List of permission requested
+        id:
+          type: string
+          description: The id access request
+          format: uuid
+        freshDeskTicketId:
+          type: string
+          description: The ticket Id is in freshdesk
+        subscriptionId:
+          type: string
+          description: The subscriptionId of the client need to support
+          format: uuid
+        requesterEmail:
+          type: string
+          description: The requester's email (from Freshdesk)
+        description:
+          type: string
+          description: The description of this request
+          nullable: true
+        status:
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+          type: integer
+          description: |-
+            The status of the access request<br/>
+                                                                Value:<br/>
+                                                                0: Requested<br/>
+                                                                1: Accepted<br/>
+                                                                2: Rejected<br/>
+                                                                3: Closed
+          format: int32
+          nullable: true
+        statusName:
+          type: string
+          description: The status name of the request
+          nullable: true
+        duration:
+          type: integer
+          description: Time in days to access customer data
+          format: int32
+        mediaUrls:
+          type: array
+          items:
+            type: string
+          description: Urls of medias
+        supportType:
+          enum:
+            - 0
+            - 1
+            - 2
+          type: integer
+          description: |-
+            The type of the support<br/>
+                                                                Value:<br/>
+                                                                0: Free<br/>
+                                                                1: Paid<br/>
+                                                                2: Otherwise
+          format: int32
+        supportTypeName:
+          type: string
+          description: The support type name
+          nullable: true
+        price:
+          $ref: '#/components/schemas/supportPrice'
+        region:
+          type: string
+          description: The region
+          nullable: true
+        permissionIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: List of permissionIds
+        createdBy:
+          type: string
+          description: User created request
+          format: uuid
+    pagination:
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          format: int32
+        pageIndex:
+          type: integer
+          format: int32
+        totalItem:
+          type: integer
+          format: int32
+        self:
+          type: string
+        first:
+          type: string
+        prev:
+          type: string
+        next:
+          type: string
+        last:
+          type: string
+    successResponse_getAccessRequestDetailDto[]:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        resultTime:
+          type: string
+          format: date-time
+        body:
+          type: array
+          items:
+            $ref: '#/components/schemas/getAccessRequestDetailDto'
+        pagination:
+          $ref: '#/components/schemas/pagination'
+    list_object:
+      type: array
+      items:
+        type: object
+    qilinError:
+      type: object
+      properties:
+        errorCode:
+          enum:
+            - 5010
+            - 5020
+            - 5030
+            - 5040
+            - 6010
+            - 7000
+            - 7010
+            - 7020
+            - 7030
+            - 7040
+            - 7050
+            - 7060
+            - 7070
+            - 7080
+            - 7090
+            - 7100
+            - 7110
+            - 7120
+            - 7130
+            - 7140
+            - 7150
+            - 7160
+            - 7170
+            - 7180
+            - 7190
+            - 7200
+            - 7210
+            - 7220
+            - 7230
+            - 8000
+            - 8001
+            - 8002
+            - 8010
+            - 8011
+            - 8012
+            - 8013
+            - 8014
+            - 8015
+            - 8016
+            - 8017
+            - 8018
+            - 8030
+            - 8031
+            - 8032
+            - 8033
+            - 8034
+            - 8035
+            - 8036
+            - 8037
+            - 8060
+            - 8061
+            - 8062
+            - 9000
+            - 9001
+            - 9002
+            - 9003
+            - 9004
+            - 9005
+            - 9006
+            - 9007
+            - 9008
+            - 9009
+            - 9010
+            - 9011
+            - 9012
+            - 9013
+            - 9020
+            - 9030
+            - 9040
+            - 9041
+            - 9050
+            - 9060
+            - 9070
+            - 9071
+            - 9072
+            - 9073
+            - 9075
+            - 9076
+            - 9077
+            - 9078
+            - 9079
+            - 9080
+            - 9081
+            - 9082
+            - 9083
+            - 9084
+            - 9085
+            - 9086
+            - 9087
+            - 9088
+            - 9089
+            - 9090
+            - 9091
+            - 9092
+            - 9101
+            - 9102
+            - 9103
+            - 9104
+            - 9105
+            - 9106
+            - 9107
+            - 9108
+            - 9109
+            - 9110
+            - 9111
+            - 9112
+            - 9113
+            - 9114
+            - 9115
+            - 9116
+            - 9201
+            - 9202
+            - 9203
+            - 9204
+            - 9301
+            - 9302
+            - 9303
+            - 9304
+            - 9305
+            - 9306
+            - 9307
+            - 9308
+            - 9309
+            - 9310
+            - 9311
+            - 9312
+            - 9313
+            - 9314
+            - 9315
+            - 9316
+            - 9317
+            - 9318
+            - 9319
+            - 10000
+            - 10001
+            - 10003
+            - 10004
+            - 10005
+            - 10006
+            - 10007
+            - 10008
+            - 10009
+            - 10011
+            - 10012
+            - 10013
+            - 10014
+            - 10015
+            - 10020
+            - 10021
+            - 10023
+            - 10024
+            - 10025
+            - 10026
+            - 10027
+            - 10028
+            - 10029
+            - 10030
+            - 10031
+            - 10032
+            - 10033
+            - 10034
+            - 10035
+            - 10036
+            - 10037
+            - 10038
+            - 10039
+            - 10043
+            - 10044
+            - 10045
+            - 10046
+            - 10047
+            - 10048
+            - 10049
+            - 10050
+            - 10051
+            - 10052
+            - 10053
+            - 10054
+            - 10055
+            - 10056
+            - 10057
+            - 10058
+            - 10059
+            - 10070
+            - 10071
+            - 10072
+            - 10073
+            - 10074
+            - 10075
+            - 10076
+            - 10077
+            - 10078
+            - 10079
+            - 30000
+            - 30001
+            - 30002
+            - 30003
+            - 30004
+            - 30005
+            - 30020
+            - 30040
+            - 30060
+            - 30100
+            - 30120
+            - 30121
+            - 30122
+            - 50000
+            - 50001
+            - 50002
+            - 70000
+            - 70001
+            - 70002
+            - 70003
+            - 70004
+            - 70010
+            - 70011
+            - 70012
+            - 70013
+            - 70014
+            - 70015
+            - 70016
+            - 70017
+            - 70018
+            - 70019
+            - 70020
+            - 70021
+            - 70022
+            - 70023
+            - 70024
+            - 70025
+            - 70026
+            - 70027
+            - 70028
+            - 70029
+            - 70030
+            - 70031
+            - 70032
+            - 70033
+            - 70034
+            - 70035
+            - 70036
+            - 70037
+            - 70038
+            - 70039
+            - 70040
+            - 70041
+            - 70042
+            - 70043
+            - 70044
+            - 70045
+            - 70050
+            - 70051
+            - 70052
+            - 70100
+            - 70101
+            - 70102
+            - 70103
+            - 70104
+            - 70105
+            - 70106
+            - 70120
+            - 90000
+            - 90001
+            - 100040
+            - 100041
+            - 100042
+          type: integer
+          format: int32
+          default: 5010
+        shortDescription:
+          type: string
+        description:
+          type: string
+        moreInformationUrl:
+          type: string
+          format: uri
+        referenceTo:
+          type: string
+        errorType:
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+            - 9
+            - 10
+            - 11
+            - 12
+            - 13
+          type: integer
+          format: int32
+          default: 0
+        additionalInformation:
+          type: string
+        options:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/list_object'
+    badRequestExceptionModel:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/qilinError'
+        creationTime:
+          type: string
+          format: date-time
+        correlationId:
+          type: string
+        requestAPI:
+          type: string
+        requestHttpVerb:
+          type: string
+        requestParameters:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/list_object'
+        requestBody:
+          type: string
+    createAccessRequestDto:
+      required:
+        - freshDeskTicketId
+        - subscriptionId
+        - requesterEmail
+        - duration
+        - supportType
+        - permissionIds
+      type: object
+      properties:
+        freshDeskTicketId:
+          minLength: 1
+          type: string
+          description: The ticket Id is in freshdesk
+        subscriptionId:
+          minLength: 1
+          type: string
+          description: The subscriptionId of the client need to support
+          format: uuid
+        requesterEmail:
+          minLength: 1
+          type: string
+          description: The requester's email (from Freshdesk)
+        description:
+          type: string
+          description: The description of this request
+          nullable: true
+        duration:
+          type: integer
+          description: Time in days to access customer data
+          format: int32
+        mediaUrls:
+          type: array
+          items:
+            type: string
+          description: Urls of medias
+        supportType:
+          enum:
+            - 0
+            - 1
+            - 2
+          type: integer
+          description: |-
+            The type of the support<br/>
+                                                                Value:<br/>
+                                                                0: Free<br/>
+                                                                1: Paid<br/>
+                                                                2: Free if bugs. Otherwise, paid
+          format: int32
+        price:
+          $ref: '#/components/schemas/supportPrice'
+        region:
+          type: string
+          description: The region
+        permissionIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: List of permissionIds
+    accessRequestBaseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id access request
+          format: uuid
+        freshDeskTicketId:
+          type: string
+          description: The ticket Id is in freshdesk
+        subscriptionId:
+          type: string
+          description: The subscriptionId of the client need to support
+          format: uuid
+        requesterEmail:
+          type: string
+          description: The requester's email (from Freshdesk)
+        description:
+          type: string
+          description: The description of this request
+          nullable: true
+        status:
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+          type: integer
+          description: |-
+            The status of the access request<br/>
+                                                                Value:<br/>
+                                                                0: Requested<br/>
+                                                                1: Accepted<br/>
+                                                                2: Rejected<br/>
+                                                                3: Closed
+          format: int32
+          nullable: true
+        statusName:
+          type: string
+          description: The status name of the request
+          nullable: true
+        duration:
+          type: integer
+          description: Time in days to access customer data
+          format: int32
+        mediaUrls:
+          type: array
+          items:
+            type: string
+          description: Urls of medias
+        supportType:
+          enum:
+            - 0
+            - 1
+            - 2
+          type: integer
+          description: |-
+            The type of the support<br/>
+                                                                Value:<br/>
+                                                                0: Free<br/>
+                                                                1: Paid<br/>
+                                                                2: Otherwise
+          format: int32
+        supportTypeName:
+          type: string
+          description: The support type name
+          nullable: true
+        price:
+          $ref: '#/components/schemas/supportPrice'
+        region:
+          type: string
+          description: The region
+          nullable: true
+        permissionIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: List of permissionIds
+        createdBy:
+          type: string
+          description: User created request
+          format: uuid
+    successResponse_accessRequestBaseDto:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        resultTime:
+          type: string
+          format: date-time
+        body:
+          $ref: '#/components/schemas/accessRequestBaseDto'
+        pagination:
+          $ref: '#/components/schemas/pagination'
+    successResponse_getAccessRequestDetailDto:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        resultTime:
+          type: string
+          format: date-time
+        body:
+          $ref: '#/components/schemas/getAccessRequestDetailDto'
+        pagination:
+          $ref: '#/components/schemas/pagination'
+    updateAccessRequestStatusDto:
+      type: object
+      properties:
+        status:
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+          type: integer
+          description: |-
+            The status of the access request<br/>
+                                                                Value:<br/>
+                                                                0: Requested<br/>
+                                                                1: Accepted<br/>
+                                                                2: Rejected<br/>
+                                                                3: Closed
+          format: int32
+        rejectReason:
+          type: string
+          description: 'The reason for the rejection of the acces request '
+    stream:
+      type: object
+      properties:
+        canRead:
+          type: boolean
+        canWrite:
+          type: boolean
+        canSeek:
+          type: boolean
+        canTimeout:
+          type: boolean
+        length:
+          type: integer
+          format: int64
+        position:
+          type: integer
+          format: int64
+        readTimeout:
+          type: integer
+          format: int32
+        writeTimeout:
+          type: integer
+          format: int32
+    stringSegment:
+      type: object
+      properties:
+        buffer:
+          type: string
+        offset:
+          type: integer
+          format: int32
+        length:
+          type: integer
+          format: int32
+        value:
+          type: string
+        hasValue:
+          type: boolean
+    entityTagHeaderValue:
+      type: object
+      properties:
+        tag:
+          $ref: '#/components/schemas/stringSegment'
+        isWeak:
+          type: boolean
+    fileStreamResult:
+      type: object
+      properties:
+        fileStream:
+          $ref: '#/components/schemas/stream'
+        contentType:
+          type: string
+        fileDownloadName:
+          type: string
+        lastModified:
+          type: string
+          format: date-time
+          nullable: true
+        entityTag:
+          $ref: '#/components/schemas/entityTagHeaderValue'
+        enableRangeProcessing:
+          type: boolean
+    successResponse_fileStreamResult:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        resultTime:
+          type: string
+          format: date-time
+        body:
+          $ref: '#/components/schemas/fileStreamResult'
+        pagination:
+          $ref: '#/components/schemas/pagination'
+    activityLogDetailAdminLevelDto:
+      type: object
+      properties:
+        payload:
+          type: string
+          description: The payload of activity
+        id:
+          type: string
+          description: The generated by Qilin when creating a new item.
+          format: uuid
+        transactionId:
+          type: integer
+          description: The generated by Qilin when a request is executed
+          format: int64
+        objectId:
+          type: string
+          description: The object is effected
+          nullable: true
+        actionGroupId:
+          enum:
+            - 0
+            - 1000
+            - 2000
+            - 3000
+            - 4000
+            - 5000
+            - 6000
+            - 7000
+          type: integer
+          description: The action group of activity
+          format: int32
+        actionGroupName:
+          type: string
+        actionCode:
+          enum:
+            - 1000
+            - 1001
+            - 1002
+            - 1003
+            - 1004
+            - 1050
+            - 1051
+            - 1052
+            - 1053
+            - 1060
+            - 1061
+            - 1062
+            - 1063
+            - 1070
+            - 1071
+            - 1072
+            - 1073
+            - 1080
+            - 1081
+            - 1082
+            - 1083
+            - 1090
+            - 1091
+            - 1092
+            - 1093
+            - 1100
+            - 1101
+            - 1102
+            - 1103
+            - 2000
+            - 2001
+            - 2002
+            - 2003
+            - 2500
+            - 2501
+            - 2503
+            - 2700
+            - 2701
+            - 2702
+            - 2703
+            - 3000
+            - 3001
+            - 3002
+            - 3003
+            - 3100
+            - 3101
+            - 3102
+            - 3103
+            - 3104
+            - 3150
+            - 3151
+            - 3152
+            - 3153
+            - 3154
+            - 3155
+            - 3200
+            - 3201
+            - 3202
+            - 3203
+            - 3250
+            - 3270
+            - 3271
+            - 3300
+            - 3301
+            - 3302
+            - 3303
+            - 3304
+            - 4000
+            - 4001
+            - 4002
+            - 5000
+            - 5001
+            - 5002
+            - 5003
+            - 6000
+            - 7000
+            - 7001
+            - 7002
+            - 7003
+            - 8000
+            - 9000
+            - 9001
+            - 9050
+            - 9051
+            - 9052
+            - 9053
+            - 9054
+            - 9055
+            - 9060
+            - 9070
+            - 9071
+            - 9080
+            - 9081
+            - 9082
+            - 9083
+            - 9090
+            - 9091
+            - 9092
+            - 9093
+            - 9095
+            - 9096
+            - 9097
+            - 9098
+            - 10000
+            - 10001
+            - 10002
+            - 10003
+            - 10005
+            - 10006
+            - 10007
+            - 10008
+            - 10009
+            - 10010
+            - 10011
+            - 10012
+            - 10013
+            - 10015
+            - 10016
+            - 10017
+            - 10018
+            - 10020
+            - 10021
+            - 10022
+            - 10023
+            - 10025
+            - 10026
+            - 10027
+            - 10028
+            - 10030
+            - 10031
+            - 10032
+            - 10035
+            - 10036
+            - 10037
+            - 10038
+            - 10040
+            - 10041
+            - 10042
+            - 10043
+            - 10045
+            - 10046
+            - 10050
+            - 10051
+            - 10101
+            - 10102
+            - 10103
+            - 10104
+            - 10105
+            - 10106
+            - 10107
+            - 10108
+          type: integer
+          description: The action detail of activity
+          format: int32
+        actionName:
+          type: string
+        logType:
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+          type: integer
+          description: The type of this log
+          format: int32
+        logTypeName:
+          type: string
+        createdDate:
+          type: string
+          description: Created date of this activity log
+          format: date-time
+        actorId:
+          type: string
+          description: 'Who is action in this transaction: userId or id of api-key'
+    successResponse_activityLogDetailAdminLevelDto[]:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        resultTime:
+          type: string
+          format: date-time
+        body:
+          type: array
+          items:
+            $ref: '#/components/schemas/activityLogDetailAdminLevelDto'
+        pagination:
+          $ref: '#/components/schemas/pagination'
+    activityLogDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The generated by Qilin when creating a new item.
+          format: uuid
+        transactionId:
+          type: integer
+          description: The generated by Qilin when a request is executed
+          format: int64
+        objectId:
+          type: string
+          description: The object is effected
+          nullable: true
+        actionGroupId:
+          enum:
+            - 0
+            - 1000
+            - 2000
+            - 3000
+            - 4000
+            - 5000
+            - 6000
+            - 7000
+          type: integer
+          description: The action group of activity
+          format: int32
+        actionGroupName:
+          type: string
+        actionCode:
+          enum:
+            - 1000
+            - 1001
+            - 1002
+            - 1003
+            - 1004
+            - 1050
+            - 1051
+            - 1052
+            - 1053
+            - 1060
+            - 1061
+            - 1062
+            - 1063
+            - 1070
+            - 1071
+            - 1072
+            - 1073
+            - 1080
+            - 1081
+            - 1082
+            - 1083
+            - 1090
+            - 1091
+            - 1092
+            - 1093
+            - 1100
+            - 1101
+            - 1102
+            - 1103
+            - 2000
+            - 2001
+            - 2002
+            - 2003
+            - 2500
+            - 2501
+            - 2503
+            - 2700
+            - 2701
+            - 2702
+            - 2703
+            - 3000
+            - 3001
+            - 3002
+            - 3003
+            - 3100
+            - 3101
+            - 3102
+            - 3103
+            - 3104
+            - 3150
+            - 3151
+            - 3152
+            - 3153
+            - 3154
+            - 3155
+            - 3200
+            - 3201
+            - 3202
+            - 3203
+            - 3250
+            - 3270
+            - 3271
+            - 3300
+            - 3301
+            - 3302
+            - 3303
+            - 3304
+            - 4000
+            - 4001
+            - 4002
+            - 5000
+            - 5001
+            - 5002
+            - 5003
+            - 6000
+            - 7000
+            - 7001
+            - 7002
+            - 7003
+            - 8000
+            - 9000
+            - 9001
+            - 9050
+            - 9051
+            - 9052
+            - 9053
+            - 9054
+            - 9055
+            - 9060
+            - 9070
+            - 9071
+            - 9080
+            - 9081
+            - 9082
+            - 9083
+            - 9090
+            - 9091
+            - 9092
+            - 9093
+            - 9095
+            - 9096
+            - 9097
+            - 9098
+            - 10000
+            - 10001
+            - 10002
+            - 10003
+            - 10005
+            - 10006
+            - 10007
+            - 10008
+            - 10009
+            - 10010
+            - 10011
+            - 10012
+            - 10013
+            - 10015
+            - 10016
+            - 10017
+            - 10018
+            - 10020
+            - 10021
+            - 10022
+            - 10023
+            - 10025
+            - 10026
+            - 10027
+            - 10028
+            - 10030
+            - 10031
+            - 10032
+            - 10035
+            - 10036
+            - 10037
+            - 10038
+            - 10040
+            - 10041
+            - 10042
+            - 10043
+            - 10045
+            - 10046
+            - 10050
+            - 10051
+            - 10101
+            - 10102
+            - 10103
+            - 10104
+            - 10105
+            - 10106
+            - 10107
+            - 10108
+          type: integer
+          description: The action detail of activity
+          format: int32
+        actionName:
+          type: string
+        logType:
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+          type: integer
+          description: The type of this log
+          format: int32
+        logTypeName:
+          type: string
+        createdDate:
+          type: string
+          description: Created date of this activity log
+          format: date-time
+        actorId:
+          type: string
+          description: 'Who is action in this transaction: userId or id of api-key'
+    successResponse_activityLogDto[]:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        resultTime:
+          type: string
+          format: date-time
+        body:
+          type: array
+          items:
+            $ref: '#/components/schemas/activityLogDto'
+        pagination:
+          $ref: '#/components/schemas/pagination'
+    notificationDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The identity of notification
+        title:
+          type: string
+          description: The title of notification
+        description:
+          type: string
+          description: The description of notification
+          nullable: true
+        notificationType:
+          enum:
+            - 0
+          type: integer
+          description: The type of notification
+          format: int32
+        isRead:
+          type: boolean
+          description: The flag to identify notification is read
+        readOnDate:
+          type: string
+          description: Time notification is read
+          format: date-time
+        createdOn:
+          type: string
+          description: Time notification is created
+          format: date-time
+        objectId:
+          type: object
+          description: Object identity involve in notification
+    successResponse_notificationDto[]:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        resultTime:
+          type: string
+          format: date-time
+        body:
+          type: array
+          items:
+            $ref: '#/components/schemas/notificationDto'
+        pagination:
+          $ref: '#/components/schemas/pagination'
+    qilinActionDetailDto:
+      required:
+        - qilinActionName
+      type: object
+      properties:
+        id:
+          type: string
+          description: The generated by Qilin when creating a new item.
+          format: uuid
+        createdBy:
+          type: string
+          description: The id of user who created this item
+          format: uuid
+        updatedDate:
+          type: string
+          description: The date when user updated this item
+          format: date-time
+        updatedBy:
+          type: string
+          description: The id of user who updated this item
+          format: uuid
+        qilinActionName:
+          minLength: 1
+          type: string
+          description: The name of this action
+        qilinActionDescription:
+          type: string
+          description: The description of this action
+          nullable: true
+    successResponse_qilinActionDetailDto[]:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        resultTime:
+          type: string
+          format: date-time
+        body:
+          type: array
+          items:
+            $ref: '#/components/schemas/qilinActionDetailDto'
+        pagination:
+          $ref: '#/components/schemas/pagination'
+    qilinActionDto:
+      required:
+        - qilinActionName
+      type: object
+      properties:
+        qilinActionName:
+          minLength: 1
+          type: string
+          description: The name of this action
+        qilinActionDescription:
+          type: string
+          description: The description of this action
+          nullable: true
+    successResponse_qilinActionDetailDto:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        resultTime:
+          type: string
+          format: date-time
+        body:
+          $ref: '#/components/schemas/qilinActionDetailDto'
+        pagination:
+          $ref: '#/components/schemas/pagination'
+    qilinPermissionDetailDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The generated by Qilin when creating a new item.
+          format: uuid
+        qilinPermissionName:
+          type: string
+          description: The permission name
+        permissionType:
+          enum:
+            - 0
+            - 1
+            - 2
+          type: integer
+          description: The type of Permission
+          format: int32
+          nullable: true
+        permissionTypeName:
+          type: string
+          description: The type of Permission
+          nullable: true
+        createdBy:
+          type: string
+          description: The id of user who created this item
+          format: uuid
+        updatedDate:
+          type: string
+          description: The date when user updated this item
+          format: date-time
+        updatedBy:
+          type: string
+          description: The id of user who updated this item
+          format: uuid
+    successResponse_qilinPermissionDetailDto[]:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        resultTime:
+          type: string
+          format: date-time
+        body:
+          type: array
+          items:
+            $ref: '#/components/schemas/qilinPermissionDetailDto'
+        pagination:
+          $ref: '#/components/schemas/pagination'
+    qilinPermissionDto:
+      type: object
+      properties:
+        qilinResourceId:
+          type: string
+          description: The id of resource
+          format: uuid
+          nullable: true
+        qilinActionId:
+          type: string
+          description: The id of action
+          format: uuid
+          nullable: true
+        permissionType:
+          enum:
+            - 0
+            - 1
+            - 2
+          type: integer
+          description: The type of Permission
+          format: int32
+          nullable: true
+    successResponse_qilinPermissionDetailDto:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        resultTime:
+          type: string
+          format: date-time
+        body:
+          $ref: '#/components/schemas/qilinPermissionDetailDto'
+        pagination:
+          $ref: '#/components/schemas/pagination'
+    qilinResourceDetailDto:
+      required:
+        - qilinResourceName
+      type: object
+      properties:
+        id:
+          type: string
+          description: The generated by Qilin when creating a new item.
+          format: uuid
+        createdBy:
+          type: string
+          description: The id of user who created this item
+          format: uuid
+        updatedDate:
+          type: string
+          description: The date when user updated this item
+          format: date-time
+        updatedBy:
+          type: string
+          description: The id of user who updated this item
+          format: uuid
+        qilinResourceName:
+          minLength: 1
+          type: string
+          description: The resource name
+    successResponse_qilinResourceDetailDto[]:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        resultTime:
+          type: string
+          format: date-time
+        body:
+          type: array
+          items:
+            $ref: '#/components/schemas/qilinResourceDetailDto'
+        pagination:
+          $ref: '#/components/schemas/pagination'
+    qilinResourceDto:
+      required:
+        - qilinResourceName
+      type: object
+      properties:
+        qilinResourceName:
+          minLength: 1
+          type: string
+          description: The resource name
+    successResponse_qilinResourceDetailDto:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        resultTime:
+          type: string
+          format: date-time
+        body:
+          $ref: '#/components/schemas/qilinResourceDetailDto'
+        pagination:
+          $ref: '#/components/schemas/pagination'
+    qilinRoleDetailDto:
+      required:
+        - qilinRoleName
+      type: object
+      properties:
+        id:
+          type: string
+          description: The generated by Qilin when creating a new item.
+          format: uuid
+        createdBy:
+          type: string
+          description: The id of user who created this item
+          format: uuid
+        updatedDate:
+          type: string
+          description: The date when user updated this item
+          format: date-time
+        updatedBy:
+          type: string
+          description: The id of user who updated this item
+          format: uuid
+        qilinPermission:
+          type: array
+          items:
+            $ref: '#/components/schemas/qilinPermissionDetailDto'
+          description: List of permission objects
+        qilinRoleName:
+          minLength: 1
+          type: string
+          description: The role name
+    successResponse_qilinRoleDetailDto:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        resultTime:
+          type: string
+          format: date-time
+        body:
+          $ref: '#/components/schemas/qilinRoleDetailDto'
+        pagination:
+          $ref: '#/components/schemas/pagination'
+    successResponse_qilinRoleDetailDto[]:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        resultTime:
+          type: string
+          format: date-time
+        body:
+          type: array
+          items:
+            $ref: '#/components/schemas/qilinRoleDetailDto'
+        pagination:
+          $ref: '#/components/schemas/pagination'
+    qilinRoleDto:
+      required:
+        - qilinRoleName
+      type: object
+      properties:
+        qilinRoleName:
+          minLength: 1
+          type: string
+          description: The role name
+    qilinUserDetailDto:
+      required:
+        - email
+      type: object
+      properties:
+        isActive:
+          type: boolean
+          description: The status of user
+        userType:
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+          type: integer
+          description: The type of user
+          format: int32
+        userTypeName:
+          type: string
+          description: The name of user type
+        azureId:
+          type: string
+          description: Azure AD id of user
+        qilinRoles:
+          type: array
+          items:
+            $ref: '#/components/schemas/qilinRoleDetailDto'
+          description: The list of role of this user
+        qilinPermission:
+          type: array
+          items:
+            $ref: '#/components/schemas/qilinPermissionDetailDto'
+          description: The list of permission of this user
+        id:
+          type: string
+          description: The generated by Qilin when creating a new item.
+          format: uuid
+        createdBy:
+          type: string
+          description: The id of user who created this item
+          format: uuid
+        createdDate:
+          type: string
+          description: The date when user created this item
+          format: date-time
+        updatedDate:
+          type: string
+          description: The date when user updated this item
+          format: date-time
+        updatedBy:
+          type: string
+          description: The id of user who updated this item
+          format: uuid
+        email:
+          minLength: 1
+          type: string
+          description: The email of user
+        displayName:
+          type: string
+          description: 'The display name, will be set "{firstname} {lastname}" if empty '
+        firstName:
+          type: string
+          description: The first name of user
+        lastName:
+          type: string
+          description: The last name of user
+    successResponse_qilinUserDetailDto:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        resultTime:
+          type: string
+          format: date-time
+        body:
+          $ref: '#/components/schemas/qilinUserDetailDto'
+        pagination:
+          $ref: '#/components/schemas/pagination'
+    qilinUserDto:
+      required:
+        - email
+      type: object
+      properties:
+        email:
+          minLength: 1
+          type: string
+          description: The email of user
+        displayName:
+          type: string
+          description: 'The display name, will be set "{firstname} {lastname}" if empty '
+        firstName:
+          type: string
+          description: The first name of user
+        lastName:
+          type: string
+          description: The last name of user
+    qilinUserBaseDto:
+      type: object
+      properties:
+        displayName:
+          type: string
+          description: 'The display name, will be set "{firstname} {lastname}" if empty '
+        firstName:
+          type: string
+          description: The first name of user
+        lastName:
+          type: string
+          description: The last name of user
+    successResponse_object:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        resultTime:
+          type: string
+          format: date-time
+        body:
+          type: object
+        pagination:
+          $ref: '#/components/schemas/pagination'
+    successResponse_qilinUserDetailDto[]:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        resultTime:
+          type: string
+          format: date-time
+        body:
+          type: array
+          items:
+            $ref: '#/components/schemas/qilinUserDetailDto'
+        pagination:
+          $ref: '#/components/schemas/pagination'
+    qilinSubscriptionDetailDto:
+      required:
+        - subscriptionName
+      type: object
+      properties:
+        id:
+          type: string
+          description: The generated by Qilin when creating a new item.
+          format: uuid
+        createdBy:
+          type: string
+          description: The id of user who created this item
+          format: uuid
+        updatedDate:
+          type: string
+          description: The date when user updated this item
+          format: date-time
+        updatedBy:
+          type: string
+          description: The id of user who updated this item
+          format: uuid
+        qilinUser:
+          $ref: '#/components/schemas/qilinUserDetailDto'
+        isActive:
+          type: boolean
+          description: The status of this subscription
+        subscriptionName:
+          minLength: 1
+          type: string
+          description: The subscription name
+    successResponse_qilinSubscriptionDetailDto[]:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        resultTime:
+          type: string
+          format: date-time
+        body:
+          type: array
+          items:
+            $ref: '#/components/schemas/qilinSubscriptionDetailDto'
+        pagination:
+          $ref: '#/components/schemas/pagination'
+    qilinSubscriptionDto:
+      required:
+        - qilinUser
+        - subscriptionName
+      type: object
+      properties:
+        qilinUser:
+          $ref: '#/components/schemas/qilinUserDto'
+        subscriptionName:
+          minLength: 1
+          type: string
+          description: The subscription name
+    successResponse_qilinSubscriptionDetailDto:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        resultTime:
+          type: string
+          format: date-time
+        body:
+          $ref: '#/components/schemas/qilinSubscriptionDetailDto'
+        pagination:
+          $ref: '#/components/schemas/pagination'
+    qilinSubscriptionBaseDto:
+      required:
+        - subscriptionName
+      type: object
+      properties:
+        subscriptionName:
+          minLength: 1
+          type: string
+          description: The subscription name
+    qilinApiKeyDurationDto:
+      type: object
+      properties:
+        durationUnitName:
+          type: string
+          description: The name unit of duration
+        duration:
+          type: integer
+          description: The time life of this apikey, it's counted when this apikey is created
+          format: int32
+        durationUnit:
+          enum:
+            - 0
+            - 1
+            - 2
+          type: integer
+          description: |-
+            The unit of duration.<br/>
+                                            Value:<br/>
+                                            0: Day<br/>
+                                            1: Month<br/>
+                                            2: Year
+          format: int32
+        expiredDate:
+          type: string
+          description: The expired date when apikey is "Duration"
+          format: date-time
+    qilinApiKeyActiveTimeDto:
+      type: object
+      properties:
+        apiKeyActiveTimeTypeName:
+          type: string
+          description: 'The name of type of active time (ex: week, month)'
+        apiKeyActiveTimeType:
+          enum:
+            - 0
+            - 1
+          type: integer
+          description: |-
+            The type of active time.<br/>
+                                            Value:<br/>
+                                            0: Week<br/>
+                                            1: Month
+          format: int32
+        selectedValue:
+          type: array
+          items:
+            type: integer
+            format: int32
+          description: The value of active time, 0 to 6 for week type and 1 to 31 for month type
+        fromTime:
+          type: string
+          description: The start time when api key valid on selected values
+        toTime:
+          type: string
+          description: The end time when api key valid on selected values
+    qilinApiKeyLifeTimeDetailDto:
+      type: object
+      properties:
+        duration:
+          $ref: '#/components/schemas/qilinApiKeyDurationDto'
+        activeTime:
+          $ref: '#/components/schemas/qilinApiKeyActiveTimeDto'
+      description: The life time of this api key
+    qilinApiKeyDetailDto:
+      required:
+        - type
+      type: object
+      properties:
+        id:
+          type: string
+          description: The generated by Qilin when creating a new item.
+          format: uuid
+        lifeTime:
+          $ref: '#/components/schemas/qilinApiKeyLifeTimeDetailDto'
+        updatedDate:
+          type: string
+          description: The date when user updated this item
+          format: date-time
+        key:
+          type: string
+          description: The generated key by Qilin when creating a new item.
+        typeName:
+          type: string
+          description: Type of this api key.
+        name:
+          type: string
+          description: The name of api key
+        type:
+          enum:
+            - 0
+            - 1
+            - 2
+          type: integer
+          description: |-
+            Type of this api key.<br/>
+                                            Value:<br/>
+                                            0: Duration<br/>
+                                            1: ActiveTime<br/>
+                                            2: Forever
+                                            
+          format: int32
+    successResponse_qilinApiKeyDetailDto[]:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        resultTime:
+          type: string
+          format: date-time
+        body:
+          type: array
+          items:
+            $ref: '#/components/schemas/qilinApiKeyDetailDto'
+        pagination:
+          $ref: '#/components/schemas/pagination'
+    qilinApiKeyDuration:
+      type: object
+      properties:
+        duration:
+          type: integer
+          description: The time life of this apikey, it's counted when this apikey is created
+          format: int32
+        durationUnit:
+          enum:
+            - 0
+            - 1
+            - 2
+          type: integer
+          description: |-
+            The unit of duration.<br/>
+                                            Value:<br/>
+                                            0: Day<br/>
+                                            1: Month<br/>
+                                            2: Year
+          format: int32
+        expiredDate:
+          type: string
+          description: The expired date when apikey is "Duration"
+          format: date-time
+      description: The period life time of api key (Duration will required when ApiKeyType is 0)
+    qilinApiKeyActiveTime:
+      type: object
+      properties:
+        apiKeyActiveTimeType:
+          enum:
+            - 0
+            - 1
+          type: integer
+          description: |-
+            The type of active time.<br/>
+                                            Value:<br/>
+                                            0: Week<br/>
+                                            1: Month
+          format: int32
+        selectedValue:
+          type: array
+          items:
+            type: integer
+            format: int32
+          description: The value of active time, 0 to 6 for week type and 1 to 31 for month type
+        fromTime:
+          type: string
+          description: The start time when api key valid on selected values
+        toTime:
+          type: string
+          description: The end time when api key valid on selected values
+      description: The active time of api key (ActiveTime will required when ApiKeyType is 1)
+    qilinApiKeyLifeTimeDto:
+      type: object
+      properties:
+        duration:
+          $ref: '#/components/schemas/qilinApiKeyDuration'
+        activeTime:
+          $ref: '#/components/schemas/qilinApiKeyActiveTime'
+      description: The life time of this api key
+    qilinApiKeyDto:
+      required:
+        - type
+      type: object
+      properties:
+        lifeTime:
+          $ref: '#/components/schemas/qilinApiKeyLifeTimeDto'
+        name:
+          type: string
+          description: The name of api key
+        type:
+          enum:
+            - 0
+            - 1
+            - 2
+          type: integer
+          description: |-
+            Type of this api key.<br/>
+                                            Value:<br/>
+                                            0: Duration<br/>
+                                            1: ActiveTime<br/>
+                                            2: Forever
+                                            
+          format: int32
+    successResponse_qilinApiKeyDetailDto:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        resultTime:
+          type: string
+          format: date-time
+        body:
+          $ref: '#/components/schemas/qilinApiKeyDetailDto'
+        pagination:
+          $ref: '#/components/schemas/pagination'
+security:
+  - bearer: []
+  - api_key: []
