@@ -21,6 +21,13 @@ if (!existsSync(cli)) {
     process.exit(1);
 }
 
+const verify = spawnSync('node', [join(__dirname, 'verify-qilin-spec-patches.mjs')], {
+    stdio: 'inherit',
+});
+if (verify.status !== 0) {
+    process.exit(verify.status ?? 1);
+}
+
 const apis = [
     { name: 'offer', className: 'QilinOfferClient' },
     { name: 'order', className: 'QilinOrderClient' },
