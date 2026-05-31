@@ -2006,13 +2006,6 @@ paths:
           required: true
           schema:
             type: string
-      requestBody:
-        description: Feedback Model
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/feedbackDto'
-        required: true
       responses:
         '200':
           description: The OK response

@@ -88,18 +88,18 @@ export class QilinApiKeyService {
      * @throws ApiError
      */
     public deleteQilinApiKeyById({
-        key,
+        id,
     }: {
         /**
          * The Api Key want to delete
          */
-        key: string,
+        id: string,
     }): CancelablePromise<successResponse_object> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/apiKeys/{id}',
             path: {
-                'key': key,
+                'id': id,
             },
             errors: {
                 400: `Bad request response with detail of errors`,
@@ -113,18 +113,18 @@ export class QilinApiKeyService {
      * @throws ApiError
      */
     public getQilinApiKeyById({
-        key,
+        id,
     }: {
         /**
          * The Api Key identity
          */
-        key: string,
+        id: string,
     }): CancelablePromise<successResponse_qilinApiKeyDetailDto> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/apiKeys/{id}',
             path: {
-                'key': key,
+                'id': id,
             },
             errors: {
                 400: `Bad request response with detail of errors`,

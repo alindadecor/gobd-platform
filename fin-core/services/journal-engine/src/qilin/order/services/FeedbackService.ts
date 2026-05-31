@@ -105,7 +105,6 @@ export class FeedbackService {
     public getFeedbackById({
         orderId,
         id,
-        requestBody,
     }: {
         /**
          * The **OrderId** parameter
@@ -115,10 +114,6 @@ export class FeedbackService {
          * The **feedbackId** parameter from third party
          */
         id: string,
-        /**
-         * Feedback Model
-         */
-        requestBody: feedbackDto,
     }): CancelablePromise<successResponse_feedbackDetailDto> {
         return this.httpRequest.request({
             method: 'GET',
@@ -127,8 +122,6 @@ export class FeedbackService {
                 'orderId': orderId,
                 'id': id,
             },
-            body: requestBody,
-            mediaType: 'application/json',
             errors: {
                 400: `Bad request response with detail of errors`,
                 500: `Server error response`,

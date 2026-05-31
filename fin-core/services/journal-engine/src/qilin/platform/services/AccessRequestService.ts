@@ -108,8 +108,13 @@ export class AccessRequestService {
      * @throws ApiError
      */
     public updateAccessRequestStatus({
+        requestId,
         requestBody,
     }: {
+        /**
+         * The access request identity
+         */
+        requestId: string,
         /**
          * Update access request status model
          */
@@ -118,6 +123,9 @@ export class AccessRequestService {
         return this.httpRequest.request({
             method: 'PUT',
             url: '/requests/access/{requestId}/status',
+            path: {
+                'requestId': requestId,
+            },
             body: requestBody,
             mediaType: 'application/json',
             errors: {

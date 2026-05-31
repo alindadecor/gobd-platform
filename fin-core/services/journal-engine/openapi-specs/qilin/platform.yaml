@@ -139,6 +139,13 @@ paths:
         - AccessRequest
       summary: Update access request status
       operationId: UpdateAccessRequestStatus
+      parameters:
+        - name: requestId
+          in: path
+          description: The access request identity
+          required: true
+          schema:
+            type: string
       requestBody:
         description: Update access request status model
         content:
@@ -2871,7 +2878,7 @@ paths:
       summary: Delete a qilin api key
       operationId: DeleteQilinApiKeyById
       parameters:
-        - name: key
+        - name: id
           in: path
           description: The Api Key want to delete
           required: true
@@ -2903,7 +2910,7 @@ paths:
       summary: Get a qilin api key
       operationId: GetQilinApiKeyById
       parameters:
-        - name: key
+        - name: id
           in: path
           description: The Api Key identity
           required: true
