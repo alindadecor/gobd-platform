@@ -1,0 +1,80 @@
+/* generated using openapi-typescript-codegen -- do not edit */
+/* istanbul ignore file */
+/* tslint:disable */
+/* eslint-disable */
+export type attributeDto = {
+    /**
+     * The name of the attribute
+     */
+    title: Record<string, string>;
+    /**
+     * The data type of the attribute<br/>
+     * Value:<br/>
+     * 0 : String<br/>
+     * 1 : Char<br/>
+     * 2 : Long<br/>
+     * 3 : Double<br/>
+     * 4 : Bool<br/>
+     * 5 : Datetime<br/>
+     * 6 : Byte<br/>
+     * 7 : Object
+     */
+    dataType: attributeDto.dataType;
+    /**
+     * A regex can be specified here, which we use to validate the value for the attribute
+     */
+    validation?: string | null;
+    /**
+     * Values can be specified here. An attribute may then only have one value defined in this list.
+     */
+    presetValues?: Array<Record<string, any>> | null;
+    /**
+     * A description of this attribute so that the merchant can better understand what is meant by this. eg "Material composition, please note this and that"
+     */
+    description?: Record<string, string>;
+    /**
+     * A description of what this attribute will be effective for e.g. "LEGAL REQUIREMENTS"
+     */
+    usageFor?: Record<string, string>;
+    /**
+     * The group of the attribute, e.g. "Product Details"
+     */
+    group?: Record<string, string>;
+    /**
+     * Controls whether this attribute can have multiple values.
+     */
+    isMultiValue?: boolean | null;
+    /**
+     *  A value indicating how important this attribute is. 0 = not important, 10 = very important
+     */
+    relevance?: number | null;
+    /**
+     * The Id of input channel, where data goes from.
+     */
+    sourceId: string;
+};
+export namespace attributeDto {
+    /**
+     * The data type of the attribute<br/>
+     * Value:<br/>
+     * 0 : String<br/>
+     * 1 : Char<br/>
+     * 2 : Long<br/>
+     * 3 : Double<br/>
+     * 4 : Bool<br/>
+     * 5 : Datetime<br/>
+     * 6 : Byte<br/>
+     * 7 : Object
+     */
+    export enum dataType {
+        '_0' = 0,
+        '_1' = 1,
+        '_2' = 2,
+        '_3' = 3,
+        '_4' = 4,
+        '_5' = 5,
+        '_6' = 6,
+        '_7' = 7,
+    }
+}
+

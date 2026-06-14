@@ -1,0 +1,81 @@
+/* generated using openapi-typescript-codegen -- do not edit */
+/* istanbul ignore file */
+/* tslint:disable */
+/* eslint-disable */
+export { QilinProductClient } from './QilinProductClient';
+
+export { ApiError } from './core/ApiError';
+export { BaseHttpRequest } from './core/BaseHttpRequest';
+export { CancelablePromise, CancelError } from './core/CancelablePromise';
+export { OpenAPI } from './core/OpenAPI';
+export type { OpenAPIConfig } from './core/OpenAPI';
+
+export { addressDetailDto } from './models/addressDetailDto';
+export { addressDto } from './models/addressDto';
+export { attributeDetailDto } from './models/attributeDetailDto';
+export { attributeDto } from './models/attributeDto';
+export type { badRequestExceptionModel } from './models/badRequestExceptionModel';
+export type { brandDetailDto } from './models/brandDetailDto';
+export type { brandDto } from './models/brandDto';
+export type { categoryBaseDto } from './models/categoryBaseDto';
+export type { categoryDetailDto } from './models/categoryDetailDto';
+export type { createCategoryDto } from './models/createCategoryDto';
+export { createProductDto } from './models/createProductDto';
+export type { createShippingClassificationDto } from './models/createShippingClassificationDto';
+export type { getByIdsBodyResponseDto_brandDetailDto } from './models/getByIdsBodyResponseDto_brandDetailDto';
+export type { getByIdsBodyResponseDto_categoryDetailDto } from './models/getByIdsBodyResponseDto_categoryDetailDto';
+export type { getByIdsBodyResponseDto_mediaDetailDto } from './models/getByIdsBodyResponseDto_mediaDetailDto';
+export type { getByIdsBodyResponseDto_productDetailDto } from './models/getByIdsBodyResponseDto_productDetailDto';
+export type { getByIdsBodyResponseDto_shippingClassificationDetailDto } from './models/getByIdsBodyResponseDto_shippingClassificationDetailDto';
+export type { getByIdsBodyResponseDto_variationDetailDto } from './models/getByIdsBodyResponseDto_variationDetailDto';
+export type { getByIdsBodyResponseDto_variationKeyDetailDto } from './models/getByIdsBodyResponseDto_variationKeyDetailDto';
+export type { getByIdsResponseDto_brandDetailDto } from './models/getByIdsResponseDto_brandDetailDto';
+export type { getByIdsResponseDto_categoryDetailDto } from './models/getByIdsResponseDto_categoryDetailDto';
+export type { getByIdsResponseDto_mediaDetailDto } from './models/getByIdsResponseDto_mediaDetailDto';
+export type { getByIdsResponseDto_productDetailDto } from './models/getByIdsResponseDto_productDetailDto';
+export type { getByIdsResponseDto_shippingClassificationDetailDto } from './models/getByIdsResponseDto_shippingClassificationDetailDto';
+export type { getByIdsResponseDto_variationDetailDto } from './models/getByIdsResponseDto_variationDetailDto';
+export type { getByIdsResponseDto_variationKeyDetailDto } from './models/getByIdsResponseDto_variationKeyDetailDto';
+export type { iEnumerable_string } from './models/iEnumerable_string';
+export type { list_object } from './models/list_object';
+export type { mediaDetailDto } from './models/mediaDetailDto';
+export type { mediaDto } from './models/mediaDto';
+export type { money } from './models/money';
+export { noteDetailDto } from './models/noteDetailDto';
+export { noteDto } from './models/noteDto';
+export type { pagination } from './models/pagination';
+export type { patchUpdateDto } from './models/patchUpdateDto';
+export type { productBaseInfo } from './models/productBaseInfo';
+export type { productCategorizationInfo } from './models/productCategorizationInfo';
+export type { productDetailDto } from './models/productDetailDto';
+export { productDto } from './models/productDto';
+export type { productMetaInfo } from './models/productMetaInfo';
+export type { productSeo } from './models/productSeo';
+export type { productTextInfo } from './models/productTextInfo';
+export type { productVariationInfo } from './models/productVariationInfo';
+export { qilinError } from './models/qilinError';
+export type { shippingClassificationDetailDto } from './models/shippingClassificationDetailDto';
+export type { shippingClassificationDto } from './models/shippingClassificationDto';
+export type { successResponse_attributeDetailDto } from './models/successResponse_attributeDetailDto';
+export type { successResponse_brandDetailDto } from './models/successResponse_brandDetailDto';
+export type { successResponse_categoryDetailDto } from './models/successResponse_categoryDetailDto';
+export type { successResponse_mediaDetailDto } from './models/successResponse_mediaDetailDto';
+export type { successResponse_object } from './models/successResponse_object';
+export type { successResponse_productDetailDto } from './models/successResponse_productDetailDto';
+export type { successResponse_shippingClassificationDetailDto } from './models/successResponse_shippingClassificationDetailDto';
+export type { successResponse_variationDetailDto } from './models/successResponse_variationDetailDto';
+export type { successResponse_variationKeyDetailDto } from './models/successResponse_variationKeyDetailDto';
+export type { successResponse_variationKeyDto } from './models/successResponse_variationKeyDto';
+export type { variationDetailDto } from './models/variationDetailDto';
+export type { variationDto } from './models/variationDto';
+export type { variationKeyDetailDto } from './models/variationKeyDetailDto';
+export type { variationKeyDto } from './models/variationKeyDto';
+
+export { AttributeService } from './services/AttributeService';
+export { BrandService } from './services/BrandService';
+export { CategoryService } from './services/CategoryService';
+export { MediaService } from './services/MediaService';
+export { ProductService } from './services/ProductService';
+export { ShippingClassificationService } from './services/ShippingClassificationService';
+export { VariationService } from './services/VariationService';
+export { VariationKeyService } from './services/VariationKeyService';
